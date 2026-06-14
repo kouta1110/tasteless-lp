@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasteless — 食を、意思決定から解放する。</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f5f5;
+      --gray-1: #1a1a1a;
+      --gray-2: #2a2a2a;
+      --gray-3: #555;
+      --gray-4: #999;
+      --gray-5: #ccc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 10vw;
+      border-bottom: 1px solid var(--gray-2);
+    }
+    .hero__eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--gray-4);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .hero__title {
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 2rem;
+    }
+    .hero__sub {
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      color: var(--gray-4);
+      max-width: 36rem;
+      margin-bottom: 3.5rem;
+      line-height: 1.8;
+    }
+    .hero__cta {
+      display: inline-block;
+      border: 1px solid var(--white);
+      color: var(--white);
+      text-decoration: none;
+      padding: 1rem 2.5rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero__cta:hover { background: var(--white); color: var(--black); }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 10vw;
+      border-bottom: 1px solid var(--gray-2);
+    }
+    .label {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      color: var(--gray-4);
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+    h2 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+    }
+    p { color: var(--gray-4); font-size: 1rem; max-width: 44rem; line-height: 1.9; }
+
+    /* ── PAIN ── */
+    .pain__loop {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+    }
+    .pain__step {
+      flex: 1 1 120px;
+      padding: 2rem 1.5rem;
+      border: 1px solid var(--gray-2);
+      text-align: center;
+    }
+    .pain__step + .pain__step { border-left: none; }
+    .pain__step__num {
+      font-size: 0.65rem;
+      color: var(--gray-3);
+      letter-spacing: 0.3em;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    .pain__step__text { font-size: 1.1rem; font-weight: 600; }
+
+    /* ── PERSONA ── */
+    .persona__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--gray-2);
+      margin-top: 3rem;
+    }
+    .persona__item {
+      background: var(--black);
+      padding: 2rem;
+    }
+    .persona__item__label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--gray-4);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .persona__item__val { font-size: 1.1rem; font-weight: 600; }
+
+    /* ── SOLUTION ── */
+    .solution__stat {
+      font-size: clamp(4rem, 12vw, 10rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin: 2rem 0 0.5rem;
+    }
+    .solution__stat__label { font-size: 1rem; color: var(--gray-4); }
+
+    /* ── COMPARISON ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3rem;
+      font-size: 0.875rem;
+    }
+    th, td {
+      padding: 1rem 1.25rem;
+      text-align: center;
+      border: 1px solid var(--gray-2);
+    }
+    th { color: var(--gray-4); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.1em; }
+    td:first-child { text-align: left; }
+    tr:first-child th { background: var(--gray-1); }
+    tr.highlight { background: var(--gray-1); }
+    tr.highlight td { color: var(--white); font-weight: 600; }
+    .mark-best { color: var(--white); font-weight: 700; }
+    .mark-ok { color: var(--gray-4); }
+    .mark-ng { color: var(--gray-3); }
+
+    /* ── PRODUCT ── */
+    .product__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--gray-2);
+      margin-top: 3rem;
+    }
+    .product__item {
+      background: var(--black);
+      padding: 2rem 1.5rem;
+    }
+    .product__item__icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      filter: grayscale(1);
+    }
+    .product__item__name { font-weight: 600; margin-bottom: 0.5rem; }
+    .product__item__price { font-size: 0.8rem; color: var(--gray-4); }
+
+    /* ── NUMBERS ── */
+    .numbers__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--gray-2);
+      margin-top: 3rem;
+    }
+    .numbers__item {
+      background: var(--black);
+      padding: 2.5rem 2rem;
+    }
+    .numbers__item__num {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .numbers__item__label { font-size: 0.75rem; color: var(--gray-4); letter-spacing: 0.1em; }
+
+    /* ── MARKET ── */
+    .market__bars { margin-top: 3rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .market__bar__label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--gray-4);
+      margin-bottom: 0.4rem;
+    }
+    .market__bar__track { height: 4px; background: var(--gray-2); position: relative; }
+    .market__bar__fill { height: 100%; background: var(--white); }
+
+    /* ── 4P ── */
+    .fourp__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--gray-2);
+      margin-top: 3rem;
+    }
+    .fourp__item {
+      background: var(--black);
+      padding: 2.5rem 2rem;
+    }
+    .fourp__item__p {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .fourp__item__title { font-size: 0.75rem; color: var(--gray-4); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
+    .fourp__item__body { font-size: 0.9rem; color: var(--gray-5); line-height: 1.8; }
+
+    /* ── JCURVE ── */
+    .jcurve { margin-top: 3rem; }
+    .jcurve svg { width: 100%; height: auto; overflow: visible; }
+
+    /* ── CTA FOOTER ── */
+    .cta-footer {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 10vw;
+      background: var(--black);
+    }
+    .cta-footer h2 { margin-bottom: 1.5rem; }
+    .cta-footer p { margin-bottom: 3rem; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 4vw;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-2);
+      z-index: 100;
+    }
+    .nav__logo { font-size: 1rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav__links { display: flex; gap: 2rem; }
+    .nav__links a {
+      font-size: 0.75rem;
+      color: var(--gray-4);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--white); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.5rem 10vw;
+      border-top: 1px solid var(--gray-2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--gray-3);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    @media (max-width: 640px) {
+      .nav__links { display: none; }
+      .pain__step + .pain__step { border-left: 1px solid var(--gray-2); border-top: none; }
+      table { font-size: 0.75rem; }
+      th, td { padding: 0.75rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav__logo">Tasteless</span>
+  <div class="nav__links">
+    <a href="#pain">課題</a>
+    <a href="#solution">解決策</a>
+    <a href="#product">商品</a>
+    <a href="#numbers">数値</a>
+    <a href="#contact">申込</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero__eyebrow">食事よりも、やりたいことがある人へ</span>
+  <h1 class="hero__title">Tasteless</h1>
+  <p class="hero__sub">
+    食を、意思決定から解放する。<br>
+    身体は自動で最高コンディション。脳は100%、あなたの目標へ。
+  </p>
+  <a href="#contact" class="hero__cta">先行登録する</a>
+</section>
+
+<!-- PAIN -->
+<section id="pain">
+  <p class="label">Problem</p>
+  <h2>「結果の変わらない意思決定」を、<br>毎日3回。</h2>
+  <p>食に変化や楽しみを求めない人でも、毎日3回「選ぶ・買う・食べる」を繰り返さなければならない。その手間が、毎日あなたの時間と脳を奪っている。</p>
+  <div class="pain__loop">
+    <div class="pain__step">
+      <span class="pain__step__num">01</span>
+      <span class="pain__step__text">選ぶ</span>
+    </div>
+    <div class="pain__step">
+      <span class="pain__step__num">02</span>
+      <span class="pain__step__text">買う</span>
+    </div>
+    <div class="pain__step">
+      <span class="pain__step__num">03</span>
+      <span class="pain__step__text">食べる</span>
+    </div>
+    <div class="pain__step">
+      <span class="pain__step__num">→</span>
+      <span class="pain__step__text">結局いつもと同じ</span>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONA -->
+<section>
+  <p class="label">Persona</p>
+  <h2>あなたではないですか。</h2>
+  <p>都内在住・20代単身ビジネスマン。食生活は完全に固定化。食事とは「空腹を満たし栄養をとるタスク」でしかない。</p>
+  <div class="persona__grid">
+    <div class="persona__item">
+      <div class="persona__item__label">朝食</div>
+      <div class="persona__item__val">プロテイン</div>
+    </div>
+    <div class="persona__item">
+      <div class="persona__item__label">昼食</div>
+      <div class="persona__item__val">コンビニおにぎり</div>
+    </div>
+    <div class="persona__item">
+      <div class="persona__item__label">食事への姿勢</div>
+      <div class="persona__item__val">タスク</div>
+    </div>
+    <div class="persona__item">
+      <div class="persona__item__label">本当にやりたいこと</div>
+      <div class="persona__item__val">仕事で成果を出す</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <p class="label">Solution</p>
+  <h2>意思決定コストを、ゼロにする。</h2>
+  <p>Tasteless が提供するのは、完全なルーティーン。空腹を感じたら、目の前にあるものをただ口に運ぶだけ。食の情報を完全シャットアウトし、脳のリソースを本来の目標へ100%投資する。</p>
+  <div class="solution__stat">0秒</div>
+  <div class="solution__stat__label">食事にかける意思決定コスト（年間）</div>
+</section>
+
+<!-- PRODUCT -->
+<section id="product">
+  <p class="label">Product</p>
+  <h2>1食 600円。<br>選ぶ必要はない。</h2>
+  <p>食事数 × 目的 × 商品 ＝ 個別最適化。月1回まとめて宅配。パッケージは無機質なモノトーン。どれを選んでも1食600円。</p>
+  <div class="product__grid">
+    <div class="product__item">
+      <div class="product__item__icon">▬</div>
+      <div class="product__item__name">プロテインバー</div>
+      <div class="product__item__price">持ち運び最適</div>
+    </div>
+    <div class="product__item">
+      <div class="product__item__icon">◈</div>
+      <div class="product__item__name">ゼリー飲料</div>
+      <div class="product__item__price">即摂取</div>
+    </div>
+    <div class="product__item">
+      <div class="product__item__icon">▣</div>
+      <div class="product__item__name">クラッカー</div>
+      <div class="product__item__price">携帯食</div>
+    </div>
+    <div class="product__item">
+      <div class="product__item__icon">◧</div>
+      <div class="product__item__name">レトルトパウチ</div>
+      <div class="product__item__price">加熱不要</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section>
+  <p class="label">Competitive Analysis</p>
+  <h2>唯一、意思決定コストをゼロにする。</h2>
+  <p>「食への興味のなさ」を訴求している商品は市場に存在しない。これが Tasteless だけが持つ独占的な強み。</p>
+  <div style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>カテゴリ</th>
+          <th>食への<br>興味のなさ訴求</th>
+          <th>持続性<br>（健康）</th>
+          <th>最低限の<br>おいしさ</th>
+          <th>買う手間</th>
+          <th>作る手間</th>
+          <th>持ち運び</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Tasteless</td>
+          <td class="mark-best">◎</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+        </tr>
+        <tr>
+          <td>ゼリー飲料</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+        </tr>
+        <tr>
+          <td>プロテインバー</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+        </tr>
+        <tr>
+          <td>プロテイン・ドリンク</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-best">◎</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ok">○</td>
+        </tr>
+        <tr>
+          <td>コンビニ飯</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-best">◎</td>
+          <td class="mark-ok">○</td>
+          <td class="mark-ng">×</td>
+          <td class="mark-ng">×</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:1rem;font-size:0.75rem;">◎ 他に無い強み　○ 該当　× 非該当</p>
+</section>
+
+<!-- NUMBERS -->
+<section id="numbers">
+  <p class="label">Business Model</p>
+  <h2>数字で見る Tasteless。</h2>
+  <div class="numbers__grid">
+    <div class="numbers__item">
+      <div class="numbers__item__num">¥12,000</div>
+      <div class="numbers__item__label">顧客単価 / 月</div>
+    </div>
+    <div class="numbers__item">
+      <div class="numbers__item__num">¥600</div>
+      <div class="numbers__item__label">1食あたり単価</div>
+    </div>
+    <div class="numbers__item">
+      <div class="numbers__item__num">80%</div>
+      <div class="numbers__item__label">粗利率</div>
+    </div>
+    <div class="numbers__item">
+      <div class="numbers__item__num">¥96,000</div>
+      <div class="numbers__item__label">LTV（8ヶ月継続）</div>
+    </div>
+    <div class="numbers__item">
+      <div class="numbers__item__num">13,000人</div>
+      <div class="numbers__item__label">売上10億円達成に必要な顧客数</div>
+    </div>
+    <div class="numbers__item">
+      <div class="numbers__item__num">10ヶ月</div>
+      <div class="numbers__item__label">累計黒字転換</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET -->
+<section>
+  <p class="label">Market Size</p>
+  <h2>2.7兆円市場。<br>ニッチを独占する。</h2>
+  <div class="market__bars">
+    <div>
+      <div class="market__bar__label"><span>TAM — 食品宅配市場</span><span>2.7兆円</span></div>
+      <div class="market__bar__track"><div class="market__bar__fill" style="width:100%"></div></div>
+    </div>
+    <div>
+      <div class="market__bar__label"><span>SAM — 食に関心のない労働者</span><span>1,700億円</span></div>
+      <div class="market__bar__track"><div class="market__bar__fill" style="width:6.3%"></div></div>
+    </div>
+    <div>
+      <div class="market__bar__label"><span>SOM — 初期獲得目標</span><span>170億円</span></div>
+      <div class="market__bar__track"><div class="market__bar__fill" style="width:0.63%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4P -->
+<section>
+  <p class="label">Marketing — 4P</p>
+  <h2>売れる仕組み。</h2>
+  <div class="fourp__grid">
+    <div class="fourp__item">
+      <div class="fourp__item__p">P</div>
+      <div class="fourp__item__title">Product</div>
+      <div class="fourp__item__body">食事数 × 目的 × 商品 ＝ 個別最適化。無機質モノトーンパッケージ。</div>
+    </div>
+    <div class="fourp__item">
+      <div class="fourp__item__p">P</div>
+      <div class="fourp__item__title">Price</div>
+      <div class="fourp__item__body">どれを選んでも1食600円。価格で迷わせない。</div>
+    </div>
+    <div class="fourp__item">
+      <div class="fourp__item__p">P</div>
+      <div class="fourp__item__title">Place</div>
+      <div class="fourp__item__body">WEB広告 → 自社EC直接誘導。D to C で中間コストゼロ。</div>
+    </div>
+    <div class="fourp__item">
+      <div class="fourp__item__p">P</div>
+      <div class="fourp__item__title">Promotion</div>
+      <div class="fourp__item__body">1年目：インフルエンサーPR（ミニマリスト・筋トレ・Vlog系）。2〜3年目：SNS広告で拡大。</div>
+    </div>
+  </div>
+</section>
+
+<!-- JCURVE -->
+<section>
+  <p class="label">Financial Projection</p>
+  <h2>Jカーブ、3年で黒字。</h2>
+  <p>初月363件の先行獲得で赤字を前倒し、谷は約0.11億円どまり。10ヶ月目に累計黒字転換。3年目年間売上10億円達成。</p>
+  <div class="jcurve">
+    <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>
+          .axis { stroke: #333; stroke-width: 1; }
+          .curve { fill: none; stroke: #f5f5f5; stroke-width: 2; }
+          .zero { stroke: #555; stroke-width: 1; stroke-dasharray: 4 4; }
+          .label-sm { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; fill: #999; }
+          .label-hi { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; fill: #f5f5f5; font-weight: 600; }
+          .dot { fill: #f5f5f5; }
+        </style>
+      </defs>
+      <!-- axes -->
+      <line class="axis" x1="60" y1="20" x2="60" y2="260" />
+      <line class="axis" x1="60" y1="260" x2="780" y2="260" />
+      <!-- zero line -->
+      <line class="zero" x1="60" y1="150" x2="780" y2="150" />
+      <!-- Jcurve path: month 0→4 dip, 4→10 recover, 10→36 grow -->
+      <path class="curve" d="
+        M 60,150
+        C 100,148 130,100 200,200
+        C 250,240 280,255 340,255
+        C 380,255 400,230 430,190
+        C 460,150 490,148 520,148
+        C 560,145 600,100 640,60
+        C 680,20 720,10 760,5
+      " />
+      <!-- key points -->
+      <circle class="dot" cx="340" cy="255" r="4" />
+      <text class="label-sm" x="290" y="248">谷 −0.11億（4ヶ月）</text>
+
+      <circle class="dot" cx="490" cy="148" r="4" />
+      <text class="label-hi" x="495" y="145">10ヶ月 黒字転換</text>
+
+      <circle class="dot" cx="760" cy="5" r="4" />
+      <text class="label-hi" x="680" y="18">3年目 10億円</text>
+
+      <!-- x labels -->
+      <text class="label-sm" x="57" y="275">0</text>
+      <text class="label-sm" x="180" y="275">4ヶ月</text>
+      <text class="label-sm" x="465" y="275">10ヶ月</text>
+      <text class="label-sm" x="720" y="275">36ヶ月</text>
+
+      <!-- y labels -->
+      <text class="label-sm" x="10" y="154">¥0</text>
+      <text class="label-sm" x="5" y="260">赤字</text>
+      <text class="label-sm" x="5" y="30">黒字</text>
+    </svg>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta-footer">
+  <p class="label">Get Started</p>
+  <h2>食を、手放そう。</h2>
+  <p>Tasteless は現在先行登録を受付中です。食への意思決定をゼロにして、本当にやりたいことに集中してください。</p>
+  <form style="display:flex;gap:1rem;flex-wrap:wrap;" onsubmit="handleSubmit(event)">
+    <input
+      type="email"
+      placeholder="your@email.com"
+      required
+      style="
+        flex:1 1 240px;
+        background:transparent;
+        border:1px solid #555;
+        color:#f5f5f5;
+        padding:1rem 1.25rem;
+        font-size:0.9rem;
+        font-family:inherit;
+        outline:none;
+      "
+    />
+    <button
+      type="submit"
+      style="
+        background:var(--white);
+        color:var(--black);
+        border:none;
+        padding:1rem 2.5rem;
+        font-size:0.85rem;
+        letter-spacing:0.15em;
+        text-transform:uppercase;
+        cursor:pointer;
+        font-family:inherit;
+        font-weight:600;
+        transition:opacity 0.2s;
+      "
+      onmouseover="this.style.opacity=0.85"
+      onmouseout="this.style.opacity=1"
+    >先行登録</button>
+  </form>
+  <p id="form-msg" style="margin-top:1rem;font-size:0.85rem;display:none;color:#f5f5f5;">登録を受け付けました。</p>
+</section>
+
+<footer>
+  <span>© 2026 Tasteless</span>
+  <span>食を、意思決定から解放する。</span>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('form-msg').style.display = 'block';
+    e.target.reset();
+  }
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.style.opacity = '1';
+        en.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('section').forEach(sec => {
+    sec.style.opacity = '0';
+    sec.style.transform = 'translateY(20px)';
+    sec.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(sec);
+  });
+</script>
+
+</body>
+</html>
